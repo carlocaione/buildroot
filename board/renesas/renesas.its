@@ -1,0 +1,88 @@
+/dts-v1/;
+
+/ {
+        description = "R-Car S4 FIT Image";
+        #address-cells = <1>;
+
+        images {
+                kernel {
+                        description = "Kernel";
+                        data = /incbin/("Image");
+                        type = "kernel";
+                        arch = "arm64";
+                        os = "linux";
+                        compression = "none";
+                        load = <0x48080000>;
+                        entry = <0x48080000>;
+                        hash {
+                                algo = "sha1";
+                        };
+                };
+
+                fdt-rc {
+                        description = "DTB-RC";
+                        data = /incbin/("r8a779f0-spider.dtb");
+                        type = "flat_dt";
+                        arch = "arm64";
+                        compression = "none";
+                        load = <0x48000000>;
+                        entry = <0x48000000>;
+                        hash {
+                                algo = "sha1";
+                        };
+                };
+
+                fdt-ep {
+                        description = "DTB-EP";
+                        data = /incbin/("r8a779f0-spider-ep.dtb");
+                        type = "flat_dt";
+                        arch = "arm64";
+                        compression = "none";
+                        load = <0x48000000>;
+                        entry = <0x48000000>;
+                        hash {
+                                algo = "sha1";
+                        };
+                };
+
+                initrd {
+                        description = "Initrd";
+                        data = /incbin/("rootfs.cpio.gz");
+                        type = "ramdisk";
+                        arch = "arm64";
+                        os = "linux";
+                        compression = "none";
+                        load = <0x74000000>;
+                        entry = <0x74000000>;
+                        hash {
+                                algo = "sha1";
+                        };
+                };
+        };
+
+        configurations {
+                default = "RC";
+
+                RC {
+                        description = "RC device";
+                        kernel = "kernel";
+                        fdt = "fdt-rc";
+                        ramdisk = "initrd";
+                        hash {
+                                algo = "sha1";
+                        };
+                };
+
+                EP {
+                        description = "EP device";
+                        kernel = "kernel";
+                        fdt = "fdt-ep";
+                        ramdisk = "initrd";
+                        hash {
+                                algo = "sha1";
+                        };
+                };
+
+        };
+
+}; 
